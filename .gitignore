@@ -1,0 +1,36 @@
+# Eclipse
+.classpath
+.projectube
+.settings/
+
+# Intellij
+.idea/
+*.iml
+*.iws
+
+
+# Mac
+.DS_Store
+
+# Maven
+log/
+target/
+.m2/
+charts/*/charts/
+charts/*/requirements.lock
+
+# deployment
+*.qcow2
+kubernetes*.ip
+*.tfstate*
+
+# Kubernetes / Helm
+helm-home/
+helm-target/
+.kube/
+
+# Python
+*.pyc
+
+index.yaml
+*.tgz

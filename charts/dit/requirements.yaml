@@ -1,0 +1,4 @@
+dependencies:
+- name: dit-help-docs
+  repository: https://arm.rnd.ki.sw.ericsson.se/artifactory/proj-adp-helm-dev-generic-local/cd/sandbox/dit/dit-help-docs
+  version: 1.1.21-7

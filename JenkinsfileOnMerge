@@ -1,0 +1,36 @@
+pipeline {
+    agent {
+        node {
+            label 'eso_slave'
+        }
+    }
+
+    environment {
+        HELM_CMD = "docker run -v $HOME/.kube/config:/root/.kube/config -v ${env.WORKSPACE}/helm-home:/root/.helm -v ${env.WORKSPACE}:${env.WORKSPACE} linkyard/docker-helm:2.7.2"
+    }
+
+    stages {
+
+        stage('Prepare helm') {
+            steps {
+                sh 'sudo rm -rf helm-home'
+                sh 'mkdir helm-home'
+                sh '${HELM_CMD} init --client-only'
+                sh '${HELM_CMD} repo add baseline-repo https://arm.rnd.ki.sw.ericsson.se/artifactory/proj-adp-helm-dev-generic-local/cd/sandbox/dit/baseline'
+                sh '${HELM_CMD} repo update'
+            }
+        }
+
+        stage('Create updated chart') {
+            steps {
+                sh "python scripts/updateymlfiles.py -w ${env.WORKSPACE} --repoRoot=${env.WORKSPACE}/charts --appChartDir=dit --helm='${HELM_CMD}'"
+            }
+        }
+
+        stage('Upload chart to arm') {
+            steps {
+                sh "python scripts/uploadScript.py -w ${env.WORKSPACE} --repoRoot=${env.WORKSPACE}/charts --appChartDir=dit --helm='${HELM_CMD}'"
+            }
+        }
+    }
+}

@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  name: dit-ningx
+spec:
+  rules:
+  - host: dit.icesat.seli.gic.ericsson.se
+    http:
+      paths:
+      - path: /helpdocs
+        backend:
+          serviceName: dit-help-docs
+          servicePort: 80
+      - path: /.cdt/
+        backend:
+          serviceName: dit-help-docs
+          servicePort: 80
